@@ -1,0 +1,46 @@
+.bookings {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  width: 80%;
+  margin: 0 auto 5rem;
+}
+
+.booking {
+  border-radius: 9px;
+  background-color: #f5f7ff;
+  box-shadow: 0 3px 11px -7px #b3c3ff;
+  transition: box-shadow 300ms ease-in, transform 200ms ease;
+  cursor: pointer;
+
+  &:hover {
+    box-shadow: 1px 5px 14px -5px #b3c3ff;
+    transform: scale(1.01);
+  }
+
+  .hotel-image {
+    width: 100%;
+    border-radius: 9px 9px 0px 0px;
+    height: 27vh;
+    object-fit: cover;
+  }
+
+  .hotel-info {
+    padding: 0.3rem 1rem 1.3rem;
+
+    h1 {
+      font-size: 1.7rem;
+      font-weight: 600;
+      margin: 0.5rem 0;
+    }
+
+    .rating {
+      margin: 0.7rem 0;
+      color: #ffd446;
+    }
+
+    p {
+      font-weight: 400;
+    }
+  }
+}

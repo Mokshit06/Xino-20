@@ -1,0 +1,42 @@
+#navbar {
+  display: flex;
+  background: #f1f4fe;
+  color: #f8f8f8;
+  min-height: 7vh;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
+}
+
+.logo {
+  a {
+    font-size: 1.6rem;
+    color: #305cf8;
+    display: block;
+    font-weight: 500;
+  }
+}
+
+.nav-links {
+  display: flex;
+  width: 35%;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.nav-links li {
+  list-style: none;
+}
+
+.nav-links a {
+  text-transform: lowercase;
+  text-decoration: none;
+  color: #305cf8;
+  font-size: 1rem;
+  letter-spacing: 0.7px;
+  font-weight: 400;
+}
+
+.hamburger {
+  display: none;
+}
