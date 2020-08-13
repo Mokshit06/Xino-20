@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Booking = require('../models/Booking');
 const Room = require('../models/Room');
+const { ensureDealer } = require('../middleware/auth');
 // todo Remove from github
 const stripe = require('stripe')(
   'sk_test_51HFjqKKaWtllu6cPEVgWtZrKIkK2sopku9rurBqMUOvMqOq2JhNhGQuaTRhBncGV4Z42gczv4pOAoUZtMs1aNn9J00ff9qHowB'
@@ -38,7 +39,7 @@ router.get('/:roomId', async (req, res) => {
     cancel_url: 'http://localhost:3000/hotels',
   });
 
-  res.render('hotels/booking', {
+  res.render('booking', {
     session_id: session.id,
     room,
   });

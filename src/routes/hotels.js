@@ -6,7 +6,6 @@ const multer = require('multer');
 const { CloudinaryStorage } = require('multer-storage-cloudinary');
 const Hotel = require('../models/Hotel');
 const Room = require('../models/Room');
-const Booking = require('../models/Booking');
 const { ensureDealer } = require('../middleware/auth');
 
 router.get('/', async (req, res) => {
@@ -154,6 +153,10 @@ router.get('/:id/rooms', ensureDealer, async (req, res) => {
 
   if (!hotel) {
     return res.json({ error: 'Hotel not found' });
+  }
+
+  if (req.user.id != hotel.user) {
+    return res.status(403).json({ message: 'Not allowed' });
   }
 
   res.render('hotels/rooms', {

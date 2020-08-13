@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/css/style.min.css">
+  <title><%= `${room.name} | ${room.hotel.name}` %></title>
+</head>
+
+<body class="hotel-create">
+
+  <%- include('partials/header.ejs') %>
+
+  <div class="page-head">Checkout <%= room.name %></div>
+
+  <div class="hotel-form-wrapper">
+    <div class="room-checkout">
+      <img src="<%= room.image %>" alt="">
+      <div class="hotel-data">
+        <div class="fields">
+          <div class="field">
+            <div class="field-name">Room: </div>
+            <div class="field-data">&nbsp;&nbsp;<%= room.name %> </div>
+          </div>
+          <div class="field">
+            <div class="field-name">Hotel: </div>
+            <div class="field-data">&nbsp;&nbsp;<%= room.hotel.name %> </div>
+          </div>
+          <div class="field">
+            <div class="field-name">Beds: </div>
+            <div class="field-data">&nbsp;&nbsp;<%= room.beds %> </div>
+          </div>
+          <div class="field">
+            <div class="field-name">Price: </div>
+            <div class="field-data">&nbsp;&nbsp;₹ <%= room.price %> </div>
+          </div>
+        </div>
+        <button id="checkout-button">Checkout</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://js.stripe.com/v3/"></script>
+  <script>
+    const stripe =
+      Stripe('pk_test_51HFjqKKaWtllu6cPzKBPF57PCkFWpDJD5rVscsB5wgONo98XERSJyvXPknBW3n71UBR5M9gt8yF5md7Nio6Pesp600UK7dwmEr');
+
+    const checkoutButton = document.getElementById('checkout-button');
+
+    checkoutButton.addEventListener('click', function () {
+      stripe.redirectToCheckout({
+        sessionId: '<%= session_id %>'
+      }).then(function (result) {
+        console.error(result.error.message)
+      });
+    });
+  </script>
+</body>
+
+</html>

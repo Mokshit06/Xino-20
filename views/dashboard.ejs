@@ -35,11 +35,14 @@
     <a href=<%- `/hotels/${hotel._id}` %> class="booking">
       <img src=<%- hotel.image %> alt="" class="hotel-image">
       <div class="hotel-info">
-        <h1><%= hotel.name %> </h1>
+        <p><%- showCovidStats(hotel.covid) %></p>
+        <h1><%= hotel.name  %></h1>
+        <div class="hotel-location">
+          <%= `${hotel.state} ${hotel.country}` %>
+        </div>
         <div class="rating">
           <%- showStar('3.4') %>
         </div>
-        <p><%= hotel.description %> </p>
       </div>
     </a>
     <% }) %>
@@ -65,13 +68,16 @@
     <a href=<%- `/hotels/${booking.room.hotel._id}` %> class="booking">
       <img src=<%= booking.room.hotel.image %> alt="" class="hotel-image">
       <div class="hotel-info">
-        <p class="room-name"><%= booking.room.name %> </p>
+        <p><%- showCovidStats(booking.room.hotel.covid) %></p>
         <h1><%= booking.room.hotel.name  %></h1>
+        <div class="hotel-location">
+          <%= `${booking.room.hotel.state} ${booking.room.hotel.country}` %>
+        </div>
+        <p class="room-name"><%= `${booking.room.name} - ${booking.room.beds} BHK` %></p>
+        <p class="booked-on"><%= booking.bookedAt %></p>
         <div class="rating">
           <%- showStar('3.4') %>
         </div>
-        <p><%= booking.room.hotel.description  %></p>
-        <p class="booked-on"><%= booking.bookedAt %></p>
       </div>
     </a>
     <% }) %>
@@ -89,8 +95,12 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.27.0/moment.min.js"></script>
   <script>
-    const bookedOn = document.querySelector('.booked-on')
-    bookedOn.innerHTML = `Booked at ${moment(bookedOn.innerHTML).format('D MMM YYYY')}`;
+    const bookedOn = document.querySelectorAll('.booked-on')
+
+    bookedOn.forEach(booking => {
+      booking.innerHTML = `Booked at ${moment(booking.innerHTML).format('D MMM YYYY')}`;
+    })
+
   </script>
 </body>
 

@@ -32,24 +32,21 @@
 
     const showCovidStats = (stats) => {
       stats = parseInt(stats)
-      if (stats > 8000) {
+      if (stats > 10000) {
         return `
           <div class="covid-danger">
-            <div class="dot"></div>
             <p>Active cases: ${stats}</p>
           </div>
         `
-      } else if (stats > 5000) {
+      } else if (stats > 6000) {
         return `
           <div class="covid-medium">
-            <div class="dot"></div>
             <p>Active cases: ${stats}</p>
           </div>
         `
       } else {
         return `
           <div class="covid-good">
-            <div class="dot"></div>
             <p>Active cases: ${stats}</p>
           </div>
         `

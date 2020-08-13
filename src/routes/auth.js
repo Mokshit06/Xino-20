@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const passport = require('passport');
-const { ensureGuest } = require('../middleware/auth');
+const { ensureGuest, ensureAuthenticated } = require('../middleware/auth');
 
 router.get(
   '/google',
@@ -23,7 +23,7 @@ router.get(
   }
 );
 
-router.get('/logout', (req, res) => {
+router.get('/logout', ensureAuthenticated, (req, res) => {
   req.logout();
   res.redirect('/');
 });

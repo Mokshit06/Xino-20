@@ -60,6 +60,28 @@ app.use((req, res, next) => {
     }
     return html;
   };
+  res.locals.showCovidStats = stats => {
+    stats = parseInt(stats);
+    if (stats > 10000) {
+      return `
+          <div class="covid-danger">
+            <p>Active cases: ${stats}</p>
+          </div>
+        `;
+    } else if (stats > 6000) {
+      return `
+          <div class="covid-medium">
+            <p>Active cases: ${stats}</p>
+          </div>
+        `;
+    } else {
+      return `
+          <div class="covid-good">
+            <p>Active cases: ${stats}</p>
+          </div>
+        `;
+    }
+  };
 
   next();
 });
