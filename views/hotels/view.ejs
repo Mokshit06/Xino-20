@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src='https://api.mapbox.com/mapbox-gl-js/v1.11.1/mapbox-gl.js'></script>
+  <link href='https://api.mapbox.com/mapbox-gl-js/v1.11.1/mapbox-gl.css' rel='stylesheet' />
+  <link rel="stylesheet" href="/css/style.min.css">
+  <title><%= hotel.name %></title>
+</head>
+
+<body>
+
+  <%- include('../partials/header.ejs') %>
+
+  <div class="hotel-head" style="background-image: url(<%- hotel.image %>);">
+    <div class="hotel-title">
+      <h1><%= hotel.name %>, <%= hotel.state || 'Delhi' %></h1>
+    </div>
+  </div>
+
+  <div class="hotel-info">
+    <div class="hotel-about">
+      <h1><%= hotel.name %></h1>
+      <p><%= hotel.description %></p>
+    </div>
+    <div id='map' style='width: 400px; height: 300px;'></div>
+  </div>
+  <script>
+    mapboxgl.accessToken = 'pk.eyJ1IjoibW9rc2hpdDA2IiwiYSI6ImNrYW1qamMybDA0eW0yeXFvMnB5dW1sMmUifQ.T7tkxjaaE6hY6m4mV5GEpQ';
+    const map = new mapboxgl.Map({
+      container: 'map',
+      style: 'mapbox://styles/mapbox/streets-v11',
+      center: <%= JSON.stringify(hotel.coordinates) %>,
+      zoom: 11
+    });
+
+    map.on('load', () => {
+      map.loadImage('https://docs.mapbox.com/mapbox-gl-js/assets/custom_marker.png', (err, image) => {
+        if (err) throw err;
+        map.addImage('custom-marker', image);
+
+        map.addSource('places', {
+          type: 'geojson',
+          data: {
+            'type': 'FeatureCollection',
+            features: [
+              {
+                type: 'Feature',
+                properties: {
+                  description: '<%- `<strong>${hotel.name}</strong> <br /> ${hotel.description}` %>',
+                },
+                geometry: {
+                  type: 'Point',
+                  coordinates: <%= JSON.stringify(hotel.coordinates) %>,
+                }
+              }
+            ]
+          }
+        });
+
+        map.addLayer({
+          'id': 'places',
+          'type': 'symbol',
+          'source': 'places',
+          'layout': {
+            'icon-image': 'custom-marker',
+            'icon-allow-overlap': true
+          }
+        });
+      })
+
+      const popup = new mapboxgl.Popup({
+        closeButton: false,
+        closeOnClick: false
+      });
+
+      map.on('mouseenter', 'places', function (e) {
+        map.getCanvas().style.cursor = 'pointer';
+
+        const coordinates = e.features[0].geometry.coordinates.slice();
+        const description = e.features[0].properties.description;
+
+        while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+          coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+        }
+
+        popup
+          .setLngLat(coordinates)
+          .setHTML(description)
+          .addTo(map);
+      });
+
+      map.on('mouseleave', 'places', function () {
+        map.getCanvas().style.cursor = '';
+        popup.remove();
+      });
+    })
+
+
+  </script>
+
+</body>
+
+</html>

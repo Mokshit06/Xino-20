@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/css/style.min.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css">
+  <title>Document</title>
+</head>
+
+<body>
+  <%- include('partials/header.ejs') %>
+
+  <div class="user-area">
+
+  </div>
+  <h1 class="page-head">Your bookings</h1>
+
+  <% if (bookings.length > 0) { %>
+  <div class="bookings">
+
+    <% bookings.forEach(booking => { %>
+    <div class="booking">
+      <img src=<%- booking.image %> alt="" class="hotel-image">
+      <div class="hotel-info">
+        <h1>Taj hotel</h1>
+        <div class="rating">
+          <%- showStar('3.4') %>
+        </div>
+        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus, fuga.</p>
+      </div>
+    </div>
+    <% }) %>
+
+  </div>
+  <% } else { %>
+  <h1 class="message">You dont have any booking right now!</h1>
+  <a href="/hotels/create">Do a booking</a>
+  <% } %>
+</body>
+
+</html>

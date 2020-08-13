@@ -4,14 +4,20 @@ const BookingSchema = new mongoose.Schema({
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'user',
+    required: true,
   },
-  place: {
+  hotel: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'hotel',
-  },
-  price: {
-    type: String,
     required: true,
+  },
+  rooms: {
+    type: Number,
+    required: true,
+  },
+  bookedAt: {
+    type: Date,
+    default: Date.now,
   },
 });
 

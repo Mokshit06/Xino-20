@@ -10,9 +10,9 @@
   <ul class="nav-links">
     <li><a href="/dashboard">dashboard</a></li>
     <li><a href="/hotels">Hotels</a></li>
-    {{#if user.isDealer}}
+    <% if(user.isDealer === 'true') { %>
     <li><a href="/hotels/create">Add a Hotel</a></li>
-    {{/if}}
+    <% } %>
     <li><a href="/auth/logout">logout</a></li>
   </ul>
 </div>

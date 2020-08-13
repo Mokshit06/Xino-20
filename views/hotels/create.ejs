@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="/css/style.min.css">
+</head>
+
+<body>
+
+  <%- include('../partials/header.ejs') %>
+
+  <div class="hotel-form">
+    <form action="/hotels/create" method="post">
+      <label>
+        <span>Hotel name</span>
+        <input type="text" id="name" name="name" required>
+      </label>
+      <label>
+        <span>Hotel name</span>
+        <input type="text" id="description" name="description" required>
+      </label>
+      <label>
+        <span>Price</span>
+        <input type="range" id="price" min="100" name="price" max="30000" required>
+      </label>
+      <label>
+        <span>Location (City and State)</span>
+        <input type="text" name="area" id="area" required>
+      </label>
+
+      <button type="submit">Next</button>
+    </form>
+  </div>
+
+</body>
+
+</html>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="/css/style.min.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css">
+</head>
+
+<body>
+
+  <%- include('../partials/header.ejs') %>
+
+  <div class="page-head">Hotels</div>
+
+  <div class="page-area">
+    <div class="search-area">
+      <h1>Search for hotels</h1>
+      <input placeholder="The Oberoi Udaivillas" type="text" id="search" class="search">
+    </div>
+
+    <div class="bookings" style="width: 100%;">
+
+    </div>
+  </div>
+
+  <script>
+    const hotels = <%- hotels %>;
+    const booking = document.querySelector('.bookings');
+
+    const updateHotelsList = (hotels) => {
+      booking.innerHTML = ''
+      hotels.forEach(hotel => booking.innerHTML += `
+        <a href='/hotels/${hotel._id}' class="booking">
+        <img src=${hotel.image} alt="" class="hotel-image">
+        <div class="hotel-info">
+          <h1>${hotel.name}</h1>
+          <div class="rating">
+            <%- showStar('3.4') %>
+          </div>
+          <p>${hotel.description}</p>
+        </div>
+      </a>
+      `)
+    }
+
+    window.addEventListener('DOMContentLoaded', () => updateHotelsList(hotels))
+
+    document.querySelector('#search').addEventListener('input', function () {
+      const filteredHotels = hotels.filter(hotel => hotel.name.match(new RegExp(`${this.value}`, 'i')))
+      if (filteredHotels.length > 0) {
+        updateHotelsList(filteredHotels);
+      } else {
+        booking.innerHTML = `<p>No hotels match your search</p>`
+      }
+    })
+  </script>
+</body>
+
+</html>

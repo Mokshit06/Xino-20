@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hotel Image</title>
+</head>
+
+<body>
+  <% if (typeof error !== 'undefined') { %>
+  <h1><%= error %></h1>
+  <% } %>
+  <form action="/hotels/<%= hotelID %>/image" method="post" enctype="multipart/form-data">
+    <label>
+      <span>Hotel image (Optional)</span>
+      <input type="file" name="image">
+    </label>
+
+    <button type="submit">Add Hotel</button>
+  </form>
+</body>
+
+</html>

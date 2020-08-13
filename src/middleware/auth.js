@@ -2,7 +2,7 @@ const ensureAuthenticated = (req, res, next) => {
   if (req.user) {
     return next();
   }
-  res.redirect('/');
+  res.redirect('/', 401);
 };
 
 const ensureGuest = (req, res, next) => {
@@ -16,7 +16,7 @@ const ensureDealer = (req, res, next) => {
   if (req.user.isDealer) {
     return next();
   }
-  res.redirect('/login');
+  res.redirect('/login', 403);
 };
 
 module.exports = {

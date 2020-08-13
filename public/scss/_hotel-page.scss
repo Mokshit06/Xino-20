@@ -1,0 +1,25 @@
+.hotel-head {
+  height: 57vh;
+  width: 100%;
+  background-position: center;
+  background-size: cover;
+}
+
+.hotel-title {
+  width: 100%;
+  height: 100%;
+  backdrop-filter: blur(3px) brightness(80%);
+  display: grid;
+  place-items: center;
+  padding: 5vh 13vw;
+
+  h1 {
+    color: #fff;
+    font-size: 3.6rem;
+  }
+}
+
+.mapboxgl-popup {
+  max-width: 400px;
+  font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+}
