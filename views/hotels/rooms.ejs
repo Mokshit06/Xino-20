@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/css/style.min.css">
+  <title><%= hotel.name %> Rooms</title>
+</head>
+
+<body>
+
+  <%- include('../partials/header.ejs') %>
+
+  <div class="page-head">Add Rooms</div>
+
+  <div class="hotel-form-wrapper">
+    <form action="/hotels/<%= hotel._id %>/rooms" method="post" class="hotel-form" enctype="multipart/form-data">
+      <label>
+        <span>Room name</span>
+        <input placeholder="Taj Lake Palace" type="text" id="name" name="name" required>
+      </label>
+      <label>
+        <span>Room description</span>
+        <textarea
+          placeholder="Taj Lake Palace, Udaipur is located midst an island in Pichola lake and offers breath-taking views of City Palace. "
+          type="text" id="description" name="description" required></textarea>
+      </label>
+      <label>
+        <span>Price</span>
+        <div class="range-slider">
+          <input class="range-slider-range" type="range" value="100" min="2000" max="30000" name="price" step="500"
+            required>
+          <span class="range-slider-value">0</span>
+        </div>
+      </label>
+      <label>
+        <span>Price</span>
+        <div class="range-slider">
+          <input class="range-slider-range" type="range" value="100" min="1" max="6" name="beds" required>
+          <span class="range-slider-value">0</span>
+        </div>
+      </label>
+      <label>
+        <span>Room image</span>
+        <div class="image-area">
+          <input type="file" name="hotelImage" id="file" required>
+          <img src id="file-image" />
+        </div>
+      </label>
+
+      <button type="submit">Add Room</button>
+    </form>
+  </div>
+
+
+  <script>
+    const priceslider = document.querySelectorAll('.range-slider')[0]
+    const pricerange = document.querySelectorAll('.range-slider-range')[0]
+    const pricevalue = document.querySelectorAll('.range-slider-value')[0]
+    const bedsslider = document.querySelectorAll('.range-slider')[1]
+    const bedsrange = document.querySelectorAll('.range-slider-range')[1]
+    const bedsvalue = document.querySelectorAll('.range-slider-value')[1]
+    const fileImage = document.querySelector('#file-image')
+    const fileInput = document.querySelector('#file')
+
+    priceslider.addEventListener('input', () => {
+      pricevalue.innerText = `₹ ${pricerange.value}`
+    })
+
+    bedsslider.addEventListener('input', () => {
+      bedsvalue.innerText = bedsrange.value
+    })
+
+    fileInput.addEventListener('input', function () {
+      if (this.files && this.files[0]) {
+        const reader = new FileReader();
+
+        reader.onload = (e) => {
+          fileImage.src = e.target.result
+          fileImage.style.display = 'block'
+        }
+
+        reader.readAsDataURL(this.files[0])
+      }
+    })
+  </script>
+</body>
+
+</html>

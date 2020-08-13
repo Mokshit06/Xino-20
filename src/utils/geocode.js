@@ -10,13 +10,16 @@ const geocode = async area => {
     if (data.message || data.features.length === 0) {
       return '';
     }
+
     const { center, context } = data.features[0];
+    console.log('context', context);
     return {
       coords: center,
-      state: context[2].text,
-      country: context[3].text,
+      state: context.slice(-2)[0].text,
+      country: context.slice(-1)[0].text,
     };
   } catch (error) {
+    console.log(error);
     throw new Error('Something went wrong');
   }
 };

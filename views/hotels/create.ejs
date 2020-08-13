@@ -8,32 +8,78 @@
   <link rel="stylesheet" href="/css/style.min.css">
 </head>
 
-<body>
+<body class="hotel-create">
 
   <%- include('../partials/header.ejs') %>
 
-  <div class="hotel-form">
-    <form action="/hotels/create" method="post">
+  <div class="page-head">Add Hotel</div>
+
+  <div class="hotel-form-wrapper">
+    <form action="/hotels/create" method="post" class="hotel-form" enctype="multipart/form-data">
       <label>
         <span>Hotel name</span>
-        <input type="text" id="name" name="name" required>
+        <input placeholder="Taj Lake Palace" type="text" id="name" name="name" required>
       </label>
       <label>
-        <span>Hotel name</span>
-        <input type="text" id="description" name="description" required>
+        <span>Hotel description</span>
+        <textarea
+          placeholder="Taj Lake Palace, Udaipur is located midst an island in Pichola lake and offers breath-taking views of City Palace. "
+          type="text" id="description" name="description" required></textarea>
       </label>
-      <label>
+      <!-- <label>
         <span>Price</span>
-        <input type="range" id="price" min="100" name="price" max="30000" required>
-      </label>
+        <div class="range-slider">
+          <input class="range-slider-range" type="range" value="100" min="0" max="30000" name="price" step="500">
+          <span class="range-slider-value">0</span>
+        </div>
+      </label> -->
       <label>
         <span>Location (City and State)</span>
-        <input type="text" name="area" id="area" required>
+        <input placeholder="Pichola, Udaipur" type="text" name="area" id="area" required>
+      </label>
+      <label>
+        <span>Hotel image</span>
+        <div class="image-area">
+          <input type="file" name="image" id="file" required>
+          <img src id="file-image" />
+        </div>
       </label>
 
       <button type="submit">Next</button>
     </form>
   </div>
+
+  <script>
+    // const rangeSlider = () => {
+    //   const slider = document.querySelector('.range-slider')
+    //   const range = document.querySelector('.range-slider-range')
+    //   const value = document.querySelector('.range-slider-value');
+
+    //   slider.addEventListener('input', () => {
+    //     value.innerText = `₹ ${range.value}`
+    //   })
+    // };
+
+    // rangeSlider();
+
+    const fileImage = document.querySelector('#file-image')
+    const fileInput = document.querySelector('#file')
+
+    fileInput.addEventListener('input', function () {
+      if (this.files && this.files[0]) {
+        const reader = new FileReader();
+
+        reader.onload = (e) => {
+          fileImage.src = e.target.result
+          fileImage.style.display = 'block'
+          console.log('Done')
+        }
+
+        reader.readAsDataURL(this.files[0])
+      }
+    })
+
+  </script>
 
 </body>
 

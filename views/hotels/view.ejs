@@ -4,8 +4,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script src='https://api.mapbox.com/mapbox-gl-js/v1.11.1/mapbox-gl.js'></script>
-  <link href='https://api.mapbox.com/mapbox-gl-js/v1.11.1/mapbox-gl.css' rel='stylesheet' />
+  <script src="https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.js"></script>
+  <link href="https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css">
+  <script
+    src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.0.2/mapbox-gl-directions.js"></script>
+  <link rel="stylesheet"
+    href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.0.2/mapbox-gl-directions.css"
+    type="text/css" />
   <link rel="stylesheet" href="/css/style.min.css">
   <title><%= hotel.name %></title>
 </head>
@@ -20,20 +26,54 @@
     </div>
   </div>
 
-  <div class="hotel-info">
-    <div class="hotel-about">
-      <h1><%= hotel.name %></h1>
-      <p><%= hotel.description %></p>
+  <div class="hotel-page-info">
+
+    <div class="hotel-left">
+      <div class="hotel-about">
+        <h1><%= hotel.name %></h1>
+        <div class="rating">
+          <%- showStar('3.4') %>
+        </div>
+        <p><%= hotel.description %></p>
+        <!-- <button id="book">Book</button> -->
+      </div>
+
+      <div id='location-map'></div>
     </div>
-    <div id='map' style='width: 400px; height: 300px;'></div>
+
+    <div class="hotel-right">
+      <% rooms.forEach(room => { %>
+      <div class="hotel-room">
+        <div class="hotel-img" style="background-image: url('<%= room.image %>');"></div>
+        <div class="hotel-room-info">
+          <div class="hotel-room-head">
+            <h1><%= room.name %></h1>
+            <p><%= room.beds %> BHK</p>
+          </div>
+          <p><%= room.description %></p>
+          <p class="price">₹ <%= room.price %></p>
+          <a href="<%= `/booking/${room._id}` %>">Book</a>
+        </div>
+      </div>
+      <% }) %>
+    </div>
   </div>
+  <div class="divider"></div>
+  <div class="directions">
+    <div class="page-subhead">Directions</div>
+    <div id="direction-map"></div>
+  </div>
+
+
+
   <script>
     mapboxgl.accessToken = 'pk.eyJ1IjoibW9rc2hpdDA2IiwiYSI6ImNrYW1qamMybDA0eW0yeXFvMnB5dW1sMmUifQ.T7tkxjaaE6hY6m4mV5GEpQ';
+
     const map = new mapboxgl.Map({
-      container: 'map',
+      container: 'location-map',
       style: 'mapbox://styles/mapbox/streets-v11',
       center: <%= JSON.stringify(hotel.coordinates) %>,
-      zoom: 11
+      zoom: 12
     });
 
     map.on('load', () => {
@@ -98,7 +138,28 @@
       });
     })
 
+    const directionMap = new mapboxgl.Map({
+      container: 'direction-map',
+      style: 'mapbox://styles/mapbox/streets-v11',
+      center: <%= JSON.stringify(hotel.coordinates) %>,
+      zoom: 13
+    });
 
+    directionMap.addControl(
+      new MapboxDirections({
+        accessToken: mapboxgl.accessToken
+      }),
+      'top-left'
+    );
+
+    navigator.geolocation.getCurrentPosition((
+      { coords: { latitude, longitude } }) => {
+      const url = `https://api.mapbox.com/directions/v5/mapbox/driving/${encodeURIComponent(`${longitude},${latitude};<%= hotel.coordinates %>`)}?alternatives=false&geometries=geojson&steps=true&access_token=pk.eyJ1IjoibW9rc2hpdDA2IiwiYSI6ImNrYW1qamMybDA0eW0yeXFvMnB5dW1sMmUifQ.T7tkxjaaE6hY6m4mV5GEpQ`;
+
+      document.querySelector('#mapbox-directions-origin-input .mapboxgl-ctrl-geocoder input').value = `${longitude}, ${latitude}`
+
+      document.querySelector('#mapbox-directions-destination-input .mapboxgl-ctrl-geocoder input').value = '<%- hotel.coordinates %>'
+    })
   </script>
 
 </body>

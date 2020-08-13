@@ -1,6 +1,6 @@
 .page-area {
   margin: 0 auto;
-  width: 80%;
+  width: 70%;
 }
 
 .search-area {
@@ -19,7 +19,7 @@
     border-radius: 6px;
     width: 100%;
     background: #f5f7fd;
-    border: 1px solid #91a8fa93;
+    border: 1px solid transparent;
     transition: border 100ms ease-in;
     outline: none;
     color: #495057;
@@ -31,7 +31,21 @@
     }
 
     &:focus {
-      border: 1px solid #305bf893;
+      border: 1px solid #91a8fa93;
     }
+  }
+}
+
+.covid {
+  &-danger {
+    color: red;
+  }
+
+  &-medium {
+    color: rgb(255, 179, 16);
+  }
+
+  &-good {
+    color: rgb(80, 223, 52);
   }
 }

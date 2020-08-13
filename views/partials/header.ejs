@@ -5,7 +5,9 @@
     <div class="line-3"></div>
   </div>
   <div class="logo">
-    <a href="/blog">Travel</a>
+    <!-- <a href="/"> -->
+    <img src="/assets/logo.png" alt="">
+    <!-- </a> -->
   </div>
   <ul class="nav-links">
     <li><a href="/dashboard">dashboard</a></li>
@@ -14,5 +16,20 @@
     <li><a href="/hotels/create">Add a Hotel</a></li>
     <% } %>
     <li><a href="/auth/logout">logout</a></li>
+    <% if (user.isDealer === 'false') { %>
+    <li><a class="dealer">Become a dealer</a></li>
+    <% } %>
   </ul>
 </div>
+
+<script>
+  const dealer = document.querySelector('.dealer')
+  if (dealer) {
+    dealer.addEventListener('click', async () => {
+      await fetch('/dealer', {
+        method: 'POST'
+      })
+      location.reload()
+    })
+  }  
+</script>

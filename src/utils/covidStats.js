@@ -18,6 +18,7 @@ const getCovidStats = async ({ country, state }) => {
 
     return Active;
   } catch (error) {
+    console.log(error);
     throw new Error('Cant get stats');
   }
 };

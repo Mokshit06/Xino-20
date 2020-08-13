@@ -1,8 +1,8 @@
 .bookings {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 1rem;
-  width: 80%;
+  width: 70%;
   margin: 0 auto 5rem;
 }
 
@@ -26,12 +26,18 @@
   }
 
   .hotel-info {
-    padding: 0.3rem 1rem 1.3rem;
+    padding: 0.5rem 1rem 0.8rem;
 
     h1 {
       font-size: 1.7rem;
       font-weight: 600;
-      margin: 0.5rem 0;
+      margin: 0.5rem 0 0.3rem 0;
+    }
+
+    .hotel-location {
+      color: #474747;
+      font-weight: 300;
+      margin: 0 0 0.8rem;
     }
 
     .rating {

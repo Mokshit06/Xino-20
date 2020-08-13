@@ -30,17 +30,46 @@
     const hotels = <%- hotels %>;
     const booking = document.querySelector('.bookings');
 
+    const showCovidStats = (stats) => {
+      stats = parseInt(stats)
+      if (stats > 8000) {
+        return `
+          <div class="covid-danger">
+            <div class="dot"></div>
+            <p>Active cases: ${stats}</p>
+          </div>
+        `
+      } else if (stats > 5000) {
+        return `
+          <div class="covid-medium">
+            <div class="dot"></div>
+            <p>Active cases: ${stats}</p>
+          </div>
+        `
+      } else {
+        return `
+          <div class="covid-good">
+            <div class="dot"></div>
+            <p>Active cases: ${stats}</p>
+          </div>
+        `
+      }
+    }
+
     const updateHotelsList = (hotels) => {
       booking.innerHTML = ''
       hotels.forEach(hotel => booking.innerHTML += `
         <a href='/hotels/${hotel._id}' class="booking">
         <img src=${hotel.image} alt="" class="hotel-image">
         <div class="hotel-info">
+          <p>${showCovidStats(hotel.covid)}</p>
           <h1>${hotel.name}</h1>
+          <p class="hotel-location">
+            ${hotel.state}, ${hotel.country}
+          </p>
           <div class="rating">
             <%- showStar('3.4') %>
           </div>
-          <p>${hotel.description}</p>
         </div>
       </a>
       `)

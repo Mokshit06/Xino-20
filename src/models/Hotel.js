@@ -6,9 +6,11 @@ const HotelSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
+    trim: true,
   },
-  price: {
-    type: String,
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
     required: true,
   },
   covid: {
@@ -34,6 +36,7 @@ const HotelSchema = new mongoose.Schema({
   },
   image: {
     type: String,
+    required: true,
   },
 });
 
@@ -41,6 +44,7 @@ HotelSchema.pre('save', async function (next) {
   const hotel = this;
   try {
     const data = await geocode(hotel.area);
+    console.log(data);
     hotel.coordinates = data.coords;
     hotel.state = data.state;
     hotel.country = data.country;
@@ -50,7 +54,8 @@ HotelSchema.pre('save', async function (next) {
     });
     next();
   } catch (error) {
-    next();
+    // next();
+    console.log(error);
   }
 });
 

@@ -13,31 +13,85 @@
   <%- include('partials/header.ejs') %>
 
   <div class="user-area">
+    <img src="<%- user.image %>" alt="">
+    <div class="user-info">
+      <h1><%= user.displayName %></h1>
+      <p class="email"><%= user.email %></p>
+      <p class="status">
+        <%= user.isDealer === 'true' ? 'Dealer': 'Customer' %>
+      </p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <%if (user.isDealer === 'true') { %>
+  <div class="page-subhead">Your Hotels</div>
+
+  <% if (hotels.length > 0) { %>
+  <div class="bookings">
+
+    <% hotels.forEach(hotel => { %>
+    <a href=<%- `/hotels/${hotel._id}` %> class="booking">
+      <img src=<%- hotel.image %> alt="" class="hotel-image">
+      <div class="hotel-info">
+        <h1><%= hotel.name %> </h1>
+        <div class="rating">
+          <%- showStar('3.4') %>
+        </div>
+        <p><%= hotel.description %> </p>
+      </div>
+    </a>
+    <% }) %>
 
   </div>
-  <h1 class="page-head">Your bookings</h1>
+  <% } else { %>
+
+  <div class="message">
+    <h1>You dont have any hotels right now!</h1>
+    <a href="/hotels/create">Add a Hotel</a>
+  </div>
+
+  <% } %>
+  <% } %>
+  <div class="divider"></div>
+
+  <div class="page-subhead">Your bookings</div>
 
   <% if (bookings.length > 0) { %>
   <div class="bookings">
 
     <% bookings.forEach(booking => { %>
-    <div class="booking">
-      <img src=<%- booking.image %> alt="" class="hotel-image">
+    <a href=<%- `/hotels/${booking.room.hotel._id}` %> class="booking">
+      <img src=<%= booking.room.hotel.image %> alt="" class="hotel-image">
       <div class="hotel-info">
-        <h1>Taj hotel</h1>
+        <p class="room-name"><%= booking.room.name %> </p>
+        <h1><%= booking.room.hotel.name  %></h1>
         <div class="rating">
           <%- showStar('3.4') %>
         </div>
-        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus, fuga.</p>
+        <p><%= booking.room.hotel.description  %></p>
+        <p class="booked-on"><%= booking.bookedAt %></p>
       </div>
-    </div>
+    </a>
     <% }) %>
 
   </div>
+
   <% } else { %>
-  <h1 class="message">You dont have any booking right now!</h1>
-  <a href="/hotels/create">Do a booking</a>
+
+  <div class="message">
+    <h1>You dont have any bookings right now!</h1>
+    <a href="/hotels/">Do a booking</a>
+  </div>
+
   <% } %>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.27.0/moment.min.js"></script>
+  <script>
+    const bookedOn = document.querySelector('.booked-on')
+    bookedOn.innerHTML = `Booked at ${moment(bookedOn.innerHTML).format('D MMM YYYY')}`;
+  </script>
 </body>
 
 </html>

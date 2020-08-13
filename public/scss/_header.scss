@@ -9,12 +9,17 @@
 }
 
 .logo {
-  a {
-    font-size: 1.6rem;
-    color: #305cf8;
-    display: block;
-    font-weight: 500;
+  // a {
+  //   font-size: 1.6rem;
+  //   color: #305cf8;
+  //   display: block;
+  //   font-weight: 500;
+
+  img {
+    height: 2.5vh;
+    width: auto;
   }
+  // }
 }
 
 .nav-links {
@@ -26,10 +31,19 @@
 
 .nav-links li {
   list-style: none;
+
+  .dealer {
+    background: #305cf8;
+    border-radius: 5px;
+    color: #fff;
+    cursor: pointer;
+  }
 }
 
 .nav-links a {
+  display: block;
   text-transform: lowercase;
+  padding: 7px 10px;
   text-decoration: none;
   color: #305cf8;
   font-size: 1rem;

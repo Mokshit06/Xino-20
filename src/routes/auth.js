@@ -18,6 +18,7 @@ router.get(
     failureRedirect: '/',
   }),
   (req, res) => {
+    console.log(req.body);
     res.redirect('/dashboard');
   }
 );

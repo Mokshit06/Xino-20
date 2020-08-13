@@ -1,11 +1,13 @@
 const express = require('express');
 const router = express.Router();
-const Hotel = require('../models/Hotel');
-const { ensureDealer } = require('../middleware/auth');
-const multer = require('multer');
-const cloudinary = require('cloudinary').v2;
-const { CloudinaryStorage } = require('multer-storage-cloudinary');
 const mongoose = require('mongoose');
+const cloudinary = require('cloudinary').v2;
+const multer = require('multer');
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
+const Hotel = require('../models/Hotel');
+const Room = require('../models/Room');
+const Booking = require('../models/Booking');
+const { ensureDealer } = require('../middleware/auth');
 
 router.get('/', async (req, res) => {
   const hotels = await Hotel.find({}).lean();
@@ -15,68 +17,8 @@ router.get('/', async (req, res) => {
   });
 });
 
-router.get('/create', async (req, res) => {
+router.get('/create', ensureDealer, async (req, res) => {
   res.render('hotels/create');
-});
-
-router.post('/create', async (req, res) => {
-  const { name, price, area, description } = req.body;
-
-  const duplicateHotel = await Hotel.find({ name, area });
-
-  if (duplicateHotel.length > 0) {
-    return res.render('hotels/create', {
-      error: 'This hotel already exists.',
-    });
-  }
-
-  const hotel = await Hotel.create({
-    name,
-    price,
-    area,
-    description,
-  });
-
-  // res.render('hotels/image', {
-  //   hotelID: hotel.id,
-  // });
-  res.redirect(`/hotels/${hotel.id}/image`);
-});
-
-router.get('/:id', async (req, res) => {
-  const id = req.params.id;
-
-  if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.json({ error: 'Invalid ID' });
-  }
-
-  const hotel = await Hotel.findById(id);
-
-  if (!hotel) {
-    return res.json({ error: 'Hotel not found' });
-  }
-
-  res.render('hotels/view', {
-    hotel,
-  });
-});
-
-router.get('/:id/image', async (req, res) => {
-  const id = req.params.id;
-
-  if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.json({ error: 'Invalid ID' });
-  }
-
-  const hotel = await Hotel.findById(id);
-
-  if (!hotel) {
-    return res.json({ error: 'Hotel not found' });
-  }
-
-  res.render('hotels/image', {
-    hotelID: hotel.id,
-  });
 });
 
 cloudinary.config({
@@ -91,8 +33,8 @@ const storage = new CloudinaryStorage({
     folder: 'travel_app',
     transformation: [
       {
-        width: 1200,
-        height: 1000,
+        width: 2400,
+        height: 2000,
         crop: 'limit',
       },
     ],
@@ -110,30 +52,113 @@ const parser = multer({
   storage: storage,
 });
 
-router.post('/:id/image', parser.single('image'), async (req, res) => {
+router.post(
+  '/create',
+  ensureDealer,
+  parser.single('image'),
+  async (req, res) => {
+    const { name, area, description } = req.body;
+
+    const duplicateHotel = await Hotel.find({ name, area });
+
+    if (duplicateHotel.length > 0) {
+      return res.render('hotels/create', {
+        error: 'This hotel already exists.',
+      });
+    }
+
+    const hotel = await Hotel.create({
+      user: req.user.id,
+      name,
+      area,
+      description,
+      image: req.file.path,
+    });
+
+    res.redirect(`/hotels/${hotel.id}/rooms`);
+  }
+);
+
+router.post(
+  '/:id/rooms',
+  ensureDealer,
+  parser.single('hotelImage'),
+  async (req, res) => {
+    const id = req.params.id;
+    const { name, price, beds, description } = req.body;
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.json({ error: 'Invalid ID' });
+    }
+
+    const hotel = await Hotel.findById(id).lean();
+
+    if (!hotel) {
+      return res.json({ error: 'Hotel not found' });
+    }
+
+    if (req.user.id != hotel.user) {
+      return res.status(403).json({ message: 'Not allowed' });
+    }
+
+    const duplicateRoom = await Room.find({ hotel: hotel.id, name });
+
+    if (duplicateRoom.length > 0) {
+      return res.render('hotels/create', {
+        error: 'This hotel already exists.',
+      });
+    }
+
+    await Room.create({
+      hotel: hotel._id,
+      name,
+      beds,
+      price,
+      description,
+      image: req.file.path,
+    });
+
+    res.redirect('/hotels');
+  }
+);
+
+router.get('/:id', async (req, res) => {
   const id = req.params.id;
 
-  if (!req.file) {
-    return res.render('hotels/image', {
-      error: 'Please provide a valid image',
-    });
-  }
-
   if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.send('Invalid ID');
+    return res.json({ error: 'Invalid ID' });
   }
 
   const hotel = await Hotel.findById(id);
 
   if (!hotel) {
-    return res.send('Hotel not found');
+    return res.json({ error: 'Hotel not found' });
   }
 
-  hotel.image = req.file.path;
+  const rooms = await Room.find({ hotel: hotel.id }).lean();
 
-  await hotel.save();
+  res.render('hotels/view', {
+    hotel,
+    rooms,
+  });
+});
 
-  res.redirect('/');
+router.get('/:id/rooms', ensureDealer, async (req, res) => {
+  const id = req.params.id;
+
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.json({ error: 'Invalid ID' });
+  }
+
+  const hotel = await Hotel.findById(id).lean();
+
+  if (!hotel) {
+    return res.json({ error: 'Hotel not found' });
+  }
+
+  res.render('hotels/rooms', {
+    hotel,
+  });
 });
 
 module.exports = router;
