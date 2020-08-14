@@ -13,7 +13,8 @@
     href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.0.2/mapbox-gl-directions.css"
     type="text/css" />
   <link rel="stylesheet" href="/css/style.min.css">
-  <title><%= hotel.name %></title>
+  <link rel="icon" href="/assets/favicon.png">
+  <title><%= hotel.name %> | Travor</title>
 </head>
 
 <body>
@@ -30,12 +31,13 @@
 
     <div class="hotel-left">
       <div class="hotel-about">
+        <%- showCovidStats(hotel.covid) %>
         <h1><%= hotel.name %></h1>
+        <p class="location"><%= `${hotel.state}, ${hotel.country}` %></p>
         <div class="rating">
           <%- showStar('3.4') %>
         </div>
         <p><%= hotel.description %></p>
-        <!-- <button id="book">Book</button> -->
       </div>
 
       <div id='location-map'></div>
@@ -52,7 +54,7 @@
           </div>
           <p><%= room.description %></p>
           <p class="price">₹ <%= room.price %></p>
-          <a href="<%= `/booking/${room._id}` %>">Book</a>
+          <a href="<%= `/booking/${room._id}` %>" class="book">Book</a>
         </div>
       </div>
       <% }) %>
@@ -64,7 +66,7 @@
     <div id="direction-map"></div>
   </div>
 
-
+  <%- include('../partials/footer.ejs') %>
 
   <script>
     mapboxgl.accessToken = 'pk.eyJ1IjoibW9rc2hpdDA2IiwiYSI6ImNrYW1qamMybDA0eW0yeXFvMnB5dW1sMmUifQ.T7tkxjaaE6hY6m4mV5GEpQ';

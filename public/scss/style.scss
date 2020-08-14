@@ -49,7 +49,7 @@ body {
   align-items: center;
   margin: 5vh auto;
   justify-content: flex-start;
-  background: #f1f4fe;
+  background: #f5f7fd;
   padding: 1.3rem;
   border-radius: 12px;
 
@@ -66,6 +66,12 @@ body {
       font-weight: 500;
     }
 
+    .email {
+      color: #474747;
+      font-weight: 400;
+      margin: 0.3rem 0;
+    }
+
     .status {
       padding: 0.2rem 0.5rem;
       width: fit-content;
@@ -79,8 +85,8 @@ body {
 
 .divider {
   width: 50%;
-  height: 0.4px;
-  background: #606972;
+  height: 2px;
+  // background: #c7c7c7;
   margin: 0 auto;
 }
 
@@ -90,3 +96,4 @@ body {
 @import '_bookings';
 @import '_create';
 @import '_hotel-page';
+@import '_footer';

@@ -2,54 +2,77 @@ const express = require('express');
 const router = express.Router();
 const Booking = require('../models/Booking');
 const Room = require('../models/Room');
-const { ensureDealer } = require('../middleware/auth');
+const mongoose = require('mongoose');
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config();
+}
 // todo Remove from github
-const stripe = require('stripe')(
-  'sk_test_51HFjqKKaWtllu6cPEVgWtZrKIkK2sopku9rurBqMUOvMqOq2JhNhGQuaTRhBncGV4Z42gczv4pOAoUZtMs1aNn9J00ff9qHowB'
-);
+const stripe = require('stripe')(process.env.STRIPE_API_KEY);
 
 router.get('/:roomId', async (req, res) => {
   const { roomId } = req.params;
-  const room = await Room.findById(roomId)
-    .populate({
-      path: 'hotel',
-      populate: {
-        path: 'user',
-      },
-    })
-    .lean();
 
-  const session = await stripe.checkout.sessions.create({
-    payment_method_types: ['card'],
-    line_items: [
-      {
-        price_data: {
-          currency: 'inr',
-          product_data: {
-            name: room.name,
-            images: [room.image],
-          },
-          unit_amount: `${room.price}00`,
+  if (!mongoose.Types.ObjectId.isValid(roomId)) {
+    return res.render('error/404');
+  }
+
+  try {
+    const room = await Room.findById(roomId)
+      .populate({
+        path: 'hotel',
+        populate: {
+          path: 'user',
         },
-        quantity: 1,
-      },
-    ],
-    mode: 'payment',
-    success_url: `http://localhost:3000/booking/create/${room._id}`,
-    cancel_url: 'http://localhost:3000/hotels',
-  });
+      })
+      .lean();
 
-  res.render('booking', {
-    session_id: session.id,
-    room,
-  });
+    if (!room) {
+      return res.render('error/404');
+    }
+
+    const session = await stripe.checkout.sessions.create({
+      payment_method_types: ['card'],
+      line_items: [
+        {
+          price_data: {
+            currency: 'inr',
+            product_data: {
+              name: room.name,
+              images: [room.image],
+            },
+            unit_amount: `${room.price}00`,
+          },
+          quantity: 1,
+        },
+      ],
+      mode: 'payment',
+      success_url: `${process.env.MAIN_URL}/booking/create/${room._id}`,
+      cancel_url: `${process.env.MAIN_URL}/hotels`,
+    });
+
+    res.render('booking', {
+      session_id: session.id,
+      room,
+    });
+  } catch (error) {
+    return res.render('error/500');
+  }
 });
 
 router.get('/create/:room/', async (req, res) => {
   const { user } = req;
-  const { room } = req.params;
+  const { room: roomId } = req.params;
+
+  if (!mongoose.Types.ObjectId.isValid(roomId)) {
+    return res.render('error/404');
+  }
 
   try {
+    const room = await Room.findById(roomId);
+
+    if (!room) {
+      return res.render('error/404');
+    }
     const booking = await Booking.create({
       user,
       room,
@@ -57,9 +80,8 @@ router.get('/create/:room/', async (req, res) => {
 
     res.redirect('/');
   } catch (error) {
-    console.log('THERE IS ERROR \n\n\n');
     console.log(error);
-    res.status(500).send();
+    res.render('error/500');
   }
 });
 

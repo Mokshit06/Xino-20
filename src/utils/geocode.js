@@ -12,7 +12,6 @@ const geocode = async area => {
     }
 
     const { center, context } = data.features[0];
-    console.log('context', context);
     return {
       coords: center,
       state: context.slice(-2)[0].text,

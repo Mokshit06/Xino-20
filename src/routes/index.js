@@ -7,24 +7,28 @@ const { ensureAuthenticated, ensureGuest } = require('../middleware/auth');
 router.get('/', ensureGuest, (req, res) => res.render('login'));
 
 router.get('/dashboard', ensureAuthenticated, async (req, res) => {
-  const bookings = await Booking.find({ user: req.user.id })
-    .populate({
-      path: 'room',
-      populate: {
-        path: 'hotel',
-      },
-    })
-    .lean();
-  let hotels = [];
+  try {
+    const bookings = await Booking.find({ user: req.user.id })
+      .populate({
+        path: 'room',
+        populate: {
+          path: 'hotel',
+        },
+      })
+      .lean();
+    let hotels = [];
 
-  if (req.user.isDealer) {
-    hotels = await Hotel.find({ user: req.user }).lean();
+    if (req.user.isDealer) {
+      hotels = await Hotel.find({ user: req.user }).lean();
+    }
+
+    res.render('dashboard', {
+      bookings,
+      hotels,
+    });
+  } catch (error) {
+    return res.render('error/500');
   }
-
-  res.render('dashboard', {
-    bookings,
-    hotels,
-  });
 });
 
 router.post('/dealer', ensureAuthenticated, async (req, res) => {

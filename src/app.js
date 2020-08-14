@@ -61,23 +61,23 @@ app.use((req, res, next) => {
     return html;
   };
   res.locals.showCovidStats = stats => {
-    stats = parseInt(stats);
+    stats = parseInt(stats) || 'Not Found';
     if (stats > 10000) {
       return `
           <div class="covid-danger">
-            <p>Active cases: ${stats}</p>
+            <p>Active cases: ${stats.toLocaleString()}</p>
           </div>
         `;
     } else if (stats > 6000) {
       return `
           <div class="covid-medium">
-            <p>Active cases: ${stats}</p>
+            <p>Active cases: ${stats.toLocaleString()}</p>
           </div>
         `;
     } else {
       return `
           <div class="covid-good">
-            <p>Active cases: ${stats}</p>
+            <p>Active cases: ${stats.toLocaleString()}</p>
           </div>
         `;
     }
@@ -90,5 +90,6 @@ app.use('/', indexRouter);
 app.use('/auth', authRouter);
 app.use('/booking', ensureAuthenticated, bookingRouter);
 app.use('/hotels', ensureAuthenticated, hotelsRouter);
+app.get('/*', (req, res) => res.render('error/404'));
 
 app.listen(PORT, () => console.log(`Server running on ${PORT}`));

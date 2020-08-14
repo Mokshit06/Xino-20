@@ -4,9 +4,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
   <link rel="stylesheet" href="/css/style.min.css">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css">
+  <link rel="icon" href="/assets/favicon.png">
+  <title>Hotels | Travor</title>
 </head>
 
 <body>
@@ -26,28 +27,30 @@
     </div>
   </div>
 
+  <%- include('../partials/footer.ejs') %>
+
   <script>
     const hotels = <%- hotels %>;
     const booking = document.querySelector('.bookings');
 
     const showCovidStats = (stats) => {
-      stats = parseInt(stats)
+      stats = parseInt(stats) || 'Not Found'
       if (stats > 10000) {
         return `
           <div class="covid-danger">
-            <p>Active cases: ${stats}</p>
+            <p>Active cases: ${stats.toLocaleString()}</p>
           </div>
         `
       } else if (stats > 6000) {
         return `
           <div class="covid-medium">
-            <p>Active cases: ${stats}</p>
+            <p>Active cases: ${stats.toLocaleString()}</p>
           </div>
         `
       } else {
         return `
           <div class="covid-good">
-            <p>Active cases: ${stats}</p>
+            <p>Active cases: ${stats.toLocaleString()}</p>
           </div>
         `
       }

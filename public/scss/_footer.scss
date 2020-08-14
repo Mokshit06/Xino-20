@@ -1,0 +1,46 @@
+footer {
+  height: 32vh;
+  // color: #ffffffa8;
+  font-size: 0.97rem;
+  background: #f5f7fd;
+
+  .contact-wrapper {
+    display: flex;
+    width: 45%;
+    align-items: center;
+    justify-content: space-between;
+    margin: 0 auto;
+    height: 100%;
+  }
+
+  .contact-head {
+    // color: #f8f8f8;
+    font-size: 1.4rem;
+    font-weight: 400;
+    margin-bottom: 0.8rem;
+  }
+
+  .copy {
+    margin-top: 1rem;
+  }
+
+  .name {
+    color: #305cf8 !important;
+  }
+
+  .about p {
+    font-size: 1.02rem;
+    color: #495057;
+    line-height: 1.6;
+  }
+
+  .links {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.6;
+
+    a {
+      color: #495057;
+    }
+  }
+}

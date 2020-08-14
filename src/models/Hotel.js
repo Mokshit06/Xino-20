@@ -44,7 +44,6 @@ HotelSchema.pre('save', async function (next) {
   const hotel = this;
   try {
     const data = await geocode(hotel.area);
-    console.log(data);
     hotel.coordinates = data.coords;
     hotel.state = data.state;
     hotel.country = data.country;
@@ -54,7 +53,6 @@ HotelSchema.pre('save', async function (next) {
     });
     next();
   } catch (error) {
-    // next();
     console.log(error);
   }
 });

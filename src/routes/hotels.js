@@ -87,13 +87,13 @@ router.post(
     const { name, price, beds, description } = req.body;
 
     if (!mongoose.Types.ObjectId.isValid(id)) {
-      return res.json({ error: 'Invalid ID' });
+      return res.render('error/404');
     }
 
     const hotel = await Hotel.findById(id).lean();
 
     if (!hotel) {
-      return res.json({ error: 'Hotel not found' });
+      return res.render('error/404');
     }
 
     if (req.user.id != hotel.user) {
@@ -125,13 +125,13 @@ router.get('/:id', async (req, res) => {
   const id = req.params.id;
 
   if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.json({ error: 'Invalid ID' });
+    return res.render('error/404');
   }
 
   const hotel = await Hotel.findById(id);
 
   if (!hotel) {
-    return res.json({ error: 'Hotel not found' });
+    return res.render('error/404');
   }
 
   const rooms = await Room.find({ hotel: hotel.id }).lean();
@@ -146,13 +146,13 @@ router.get('/:id/rooms', ensureDealer, async (req, res) => {
   const id = req.params.id;
 
   if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.json({ error: 'Invalid ID' });
+    return res.render('error/404');
   }
 
   const hotel = await Hotel.findById(id).lean();
 
   if (!hotel) {
-    return res.json({ error: 'Hotel not found' });
+    return res.render('error/404');
   }
 
   if (req.user.id != hotel.user) {

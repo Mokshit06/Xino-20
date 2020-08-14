@@ -1,0 +1,21 @@
+<footer>
+  <div class="contact-wrapper">
+    <div class="about">
+      <h3 class="contact-head">About</h3>
+      <p>Made with &hearts; by <span class="name">Mokshit Jain</span></p>
+      <p><span class="name">Montfort School Delhi</span></p>
+      <p class="copy">&copy; travor 2020</p>
+    </div>
+    <div class="explore">
+      <h3 class="contact-head">Explore</h3>
+      <div class="links">
+        <a href="/">Dashboard</a>
+        <a href="/hotels">Hotels</a>
+        <% if (user.isDealer === 'true') { %>
+        <a href="/hotels/create">Add a hotel</a>
+        <% } %>
+        <a href="">Logout</a>
+      </div>
+    </div>
+  </div>
+</footer>

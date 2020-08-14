@@ -4,8 +4,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
   <link rel="stylesheet" href="/css/style.min.css">
+  <link rel="icon" href="/assets/favicon.png">
+  <title>Add a hotel | Travor</title>
 </head>
 
 <body class="hotel-create">
@@ -26,13 +27,6 @@
           placeholder="Taj Lake Palace, Udaipur is located midst an island in Pichola lake and offers breath-taking views of City Palace. "
           type="text" id="description" name="description" required></textarea>
       </label>
-      <!-- <label>
-        <span>Price</span>
-        <div class="range-slider">
-          <input class="range-slider-range" type="range" value="100" min="0" max="30000" name="price" step="500">
-          <span class="range-slider-value">0</span>
-        </div>
-      </label> -->
       <label>
         <span>Location (City and State)</span>
         <input placeholder="Pichola, Udaipur" type="text" name="area" id="area" required>
@@ -49,19 +43,9 @@
     </form>
   </div>
 
+  <%- include('../partials/footer.ejs') %>
+
   <script>
-    // const rangeSlider = () => {
-    //   const slider = document.querySelector('.range-slider')
-    //   const range = document.querySelector('.range-slider-range')
-    //   const value = document.querySelector('.range-slider-value');
-
-    //   slider.addEventListener('input', () => {
-    //     value.innerText = `₹ ${range.value}`
-    //   })
-    // };
-
-    // rangeSlider();
-
     const fileImage = document.querySelector('#file-image')
     const fileInput = document.querySelector('#file')
 
@@ -72,13 +56,11 @@
         reader.onload = (e) => {
           fileImage.src = e.target.result
           fileImage.style.display = 'block'
-          console.log('Done')
         }
 
         reader.readAsDataURL(this.files[0])
       }
     })
-
   </script>
 
 </body>

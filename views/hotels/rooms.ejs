@@ -5,7 +5,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="/css/style.min.css">
-  <title><%= hotel.name %> Rooms</title>
+  <link rel="icon" href="/assets/favicon.png">
+  <title><%= hotel.name %> Rooms | Travor</title>
 </head>
 
 <body>
@@ -35,7 +36,7 @@
         </div>
       </label>
       <label>
-        <span>Price</span>
+        <span>Bedrooms</span>
         <div class="range-slider">
           <input class="range-slider-range" type="range" value="100" min="1" max="6" name="beds" required>
           <span class="range-slider-value">0</span>
@@ -53,6 +54,7 @@
     </form>
   </div>
 
+  <%- include('../partials/footer.ejs') %>
 
   <script>
     const priceslider = document.querySelectorAll('.range-slider')[0]

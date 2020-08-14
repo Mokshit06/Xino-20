@@ -5,6 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="/css/style.min.css">
+  <link rel="icon" href="/assets/favicon.png">
   <title><%= `${room.name} | ${room.hotel.name}` %></title>
 </head>
 
@@ -28,7 +29,7 @@
             <div class="field-data">&nbsp;&nbsp;<%= room.hotel.name %> </div>
           </div>
           <div class="field">
-            <div class="field-name">Beds: </div>
+            <div class="field-name">Bedrooms: </div>
             <div class="field-data">&nbsp;&nbsp;<%= room.beds %> </div>
           </div>
           <div class="field">
@@ -40,6 +41,8 @@
       </div>
     </div>
   </div>
+  <%- include('partials/footer.ejs') %>
+
 
   <script src="https://js.stripe.com/v3/"></script>
   <script>
