@@ -64,7 +64,6 @@
 
   <% if (bookings.length > 0) { %>
   <div class="bookings">
-
     <% bookings.forEach(booking => { %>
     <a href=<%- `/hotels/${booking.room.hotel._id}` %> class="booking">
       <img src=<%= booking.room.hotel.image %> alt="" class="hotel-image">

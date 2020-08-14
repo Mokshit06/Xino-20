@@ -34,6 +34,8 @@ router.get('/dashboard', ensureAuthenticated, async (req, res) => {
 router.post('/dealer', ensureAuthenticated, async (req, res) => {
   req.user.isDealer = true;
   await req.user.save();
+
+  res.redirect('/');
 });
 
 module.exports = router;

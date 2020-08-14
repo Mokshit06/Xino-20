@@ -3,6 +3,10 @@ const router = express.Router();
 const Booking = require('../models/Booking');
 const Room = require('../models/Room');
 const mongoose = require('mongoose');
+const {
+  sendBookingEmailDealer,
+  sendBookingEmailUser,
+} = require('../utils/email');
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config();
 }
@@ -68,14 +72,37 @@ router.get('/create/:room/', async (req, res) => {
   }
 
   try {
-    const room = await Room.findById(roomId);
+    const room = await Room.findById(roomId).populate({
+      path: 'hotel',
+      populate: {
+        path: 'user',
+      },
+    });
 
     if (!room) {
       return res.render('error/404');
     }
+
     const booking = await Booking.create({
       user,
       room,
+    });
+
+    sendBookingEmailDealer({
+      dealerEmail: room.hotel.user.email,
+      customer: {
+        email: req.user.email,
+        name: req.user.displayName,
+      },
+      room: room.name,
+      hotel: room.hotel.name,
+    });
+
+    sendBookingEmailUser({
+      email: req.user.email,
+      name: req.user.firstName,
+      hotel: room.hotel.name,
+      room: room.name,
     });
 
     res.redirect('/');
