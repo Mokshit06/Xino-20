@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/css/style.min.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css">
+  <link rel="icon" href="/assets/favicon.png">
+  <title>Transports | Travor</title>
+</head>
+
+<body>
+
+  <%- include('../partials/header.ejs') %>
+
+  <div class="page-head">Transports</div>
+
+  <div class="page-area">
+    <div class="search-area">
+      <h1>Search for Transport</h1>
+      <input placeholder="Toyota Fortuner" type="text" id="search" class="search">
+    </div>
+
+    <div class="bookings" style="width: 100%;">
+
+    </div>
+  </div>
+
+  <%- include('../partials/footer.ejs') %>
+
+  <script>
+    const transports = <%- JSON.stringify(transports) %>;
+    const booking = document.querySelector('.bookings');
+
+    const updateHotelsList = (transports) => {
+      booking.innerHTML = ''
+      transports.forEach(transport => booking.innerHTML += `
+        <a href='/transport/${transport._id}' class="booking">
+        <img src=${transport.image} alt="" class="hotel-image">
+        <div class="hotel-info">
+          <h1>${transport.name}</h1>
+          <p class="hotel-location">
+            ${transport.state}, ${transport.country}
+          </p>
+          <div class="rating">
+            <%- showStar('4') %>
+          </div>
+        </div>
+      </a>
+      `)
+    }
+
+    window.addEventListener('DOMContentLoaded', () => updateHotelsList(transports))
+
+    document.querySelector('#search').addEventListener('input', function () {
+      const filteredTransports = transports.filter(transport => transport.name.match(new RegExp(`${this.value}`, 'i')))
+      if (filteredTransports.length > 0) {
+        updateHotelsList(filteredTransports);
+      } else {
+        booking.innerHTML = `<p>No transport matches your search</p>`
+      }
+    })
+  </script>
+</body>
+
+</html>

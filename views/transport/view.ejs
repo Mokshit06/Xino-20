@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css">
+  <link rel="stylesheet" href="/css/style.min.css">
+  <link rel="icon" href="/assets/favicon.png">
+  <title><%= transport.name %> | Travor</title>
+</head>
+
+<style>
+  .book {
+    background: #305cf8;
+    width: fit-content;
+    padding: 0.6rem 1.6rem;
+    font-size: 1.1rem;
+    border-radius: 8px;
+    color: #fff;
+    margin: 0.9rem 0;
+    cursor: pointer;
+  }
+
+  footer {
+    margin-top: 10vh;
+  }
+</style>
+
+<body>
+
+  <%- include('../partials/header.ejs') %>
+
+  <div class="hotel-head" style="background-image: url(<%- transport.image %>);">
+    <div class="hotel-title">
+      <h1><%= transport.name %>, <%= transport.state || 'Delhi' %></h1>
+    </div>
+  </div>
+
+  <div class="hotel-page-info">
+
+    <div class="hotel-left">
+      <div class="hotel-about">
+        <h1><%= transport.name %></h1>
+        <p class="location"><%= transport.typeOfTransport %></p>
+        <p class="location"><%= `${transport.state}, ${transport.country}` %></p>
+        <div class="rating">
+          <%- showStar('4') %>
+        </div>
+        <p><%= transport.description %></p>
+      </div>
+      <div id="checkout-button" class="book">Book</div>
+    </div>
+  </div>
+  <div class="divider"></div>
+
+  <%- include('../partials/footer.ejs') %>
+
+  <script src="https://js.stripe.com/v3/"></script>
+
+  <script>
+    const stripe =
+      Stripe('pk_test_51HFjqKKaWtllu6cPzKBPF57PCkFWpDJD5rVscsB5wgONo98XERSJyvXPknBW3n71UBR5M9gt8yF5md7Nio6Pesp600UK7dwmEr');
+
+    const checkoutButton = document.getElementById('checkout-button');
+
+    checkoutButton.addEventListener('click', function () {
+      stripe.redirectToCheckout({
+        sessionId: '<%= session_id %>'
+      }).then(function (result) {
+        console.error(result.error.message)
+      });
+    });
+  </script>
+
+</body>
+
+</html>

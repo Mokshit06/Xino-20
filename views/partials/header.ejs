@@ -12,8 +12,10 @@
   <ul class="nav-links">
     <li><a href="/dashboard">dashboard</a></li>
     <li><a href="/hotels">Hotels</a></li>
+    <li><a href="/transport">Transports</a></li>
     <% if(user.isDealer === 'true') { %>
     <li><a href="/hotels/create">Add a Hotel</a></li>
+    <li><a href="/transport/create">Add a Transport</a></li>
     <% } %>
     <li><a href="/auth/logout">logout</a></li>
     <% if (user.isDealer === 'false') { %>

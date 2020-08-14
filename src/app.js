@@ -14,6 +14,7 @@ const authRouter = require('./routes/auth');
 const indexRouter = require('./routes/index');
 const bookingRouter = require('./routes/bookings');
 const hotelsRouter = require('./routes/hotels');
+const transportRouter = require('./routes/transport');
 
 const app = express();
 
@@ -90,6 +91,7 @@ app.use('/', indexRouter);
 app.use('/auth', authRouter);
 app.use('/booking', ensureAuthenticated, bookingRouter);
 app.use('/hotels', ensureAuthenticated, hotelsRouter);
+app.use('/transport', ensureAuthenticated, transportRouter);
 app.get('/*', (req, res) => res.render('error/404'));
 
 app.listen(PORT, () => console.log(`Server running on ${PORT}`));

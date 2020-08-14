@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/css/style.min.css">
+  <link rel="icon" href="/assets/favicon.png">
+  <title>Add a Transport | Travor</title>
+</head>
+
+<body class="hotel-create">
+
+  <%- include('../partials/header.ejs') %>
+
+  <div class="page-head">Add Transport</div>
+
+  <div class="hotel-form-wrapper">
+    <form action="/transport/create" method="post" class="hotel-form" enctype="multipart/form-data">
+      <label>
+        <span>Transport name</span>
+        <input placeholder="Toyota Fortuner" type="text" id="name" name="name" required>
+      </label>
+      <label>
+        <span>Transport type (Bus / Car / Plane)</span>
+        <input placeholder="Car" type=" text" id="description" name="typeOfTransport" required />
+      </label>
+      <label>
+        <span>Desctiption</span>
+        <input placeholder="Comfortable ride" type=" text" id="description" name="description" required />
+      </label>
+      <label>
+        <span>State</span>
+        <input placeholder="New Delhi" type="text" name="state" id="area" required>
+      </label>
+      <label>
+        <span>Country</span>
+        <input placeholder="India" type="text" name="country" id="area" required>
+      </label>
+      <label>
+        <span>Price</span>
+        <div class="range-slider">
+          <input class="range-slider-range" type="range" value="0" min="1000" max="30000" name="price" step="500"
+            required>
+          <span class="range-slider-value">0</span>
+        </div>
+      </label>
+      <label>
+        <span>Hotel image</span>
+        <div class="image-area">
+          <input type="file" name="image" id="file" required>
+          <img src id="file-image" />
+        </div>
+      </label>
+
+
+      <button type="submit">Submit</button>
+    </form>
+  </div>
+
+  <%- include('../partials/footer.ejs') %>
+
+  <script>
+    const priceslider = document.querySelectorAll('.range-slider')[0]
+    const pricerange = document.querySelectorAll('.range-slider-range')[0]
+    const pricevalue = document.querySelectorAll('.range-slider-value')[0]
+    priceslider.addEventListener('input', () => {
+      pricevalue.innerText = `₹ ${pricerange.value}`
+    })
+
+    const fileImage = document.querySelector('#file-image')
+    const fileInput = document.querySelector('#file')
+
+    fileInput.addEventListener('input', function () {
+      if (this.files && this.files[0]) {
+        const reader = new FileReader();
+
+        reader.onload = (e) => {
+          fileImage.src = e.target.result
+          fileImage.style.display = 'block'
+        }
+
+        reader.readAsDataURL(this.files[0])
+      }
+    })
+  </script>
+
+</body>
+
+</html>
